@@ -11,7 +11,7 @@ router.get("/", async function (req, res) {
 
 router.get("/:id", async function (req, res) {
   const id = req.params.id;
-  const movie = await MovieModel.find({ _id: id });
+  const movie = await MovieModel.find({ id: id });
   res.status(201).json(movie);
 });
 

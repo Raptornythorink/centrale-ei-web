@@ -4,7 +4,7 @@ import os
 from pymongo import MongoClient
 import pymongo
 from json import load
-from json import dump
+from json import dumps as json_dumps
 from bson.json_util import dumps
 from dotenv import load_dotenv,find_dotenv
 load_dotenv(find_dotenv())
@@ -15,7 +15,7 @@ def get_database():
     client = MongoClient(MONGO_BD_URL)
     movies = client.group4.movies.find()############################changer movies
     return movies
-print(get_database())
+
 #######################################################################
 def create_matrix():
     '''retourne un format panda des notations'''
@@ -63,13 +63,29 @@ def dico_note_film(pred,liste_film_id):
         dico_resultat[liste_film_id[i]] = pred[i]
     return dico_resultat
 
-def trouver_note(user_id):
+def notes_triees(pred,liste_film_id):
+    '''prend une liste de résultats et d'id de films et renvoie un json avec les id des films et les notes prédites décroissantes'''
+    json_obj = []
+    for i in len(pred):
+        d = {}
+        d['id']=liste_film_id[i]
+        d['note']=pred[i]
+    json_obj = sorted(json_obj, key=lambda x : x['note'], reverse=True)
+    return json_dumps(json_obj)
+
+def trouver_note_dico(user_id):
     '''pour un user_id donné, renvoie un dico avec, pour des id de films, les notes associées'''
     matrix = create_matrix()
     user_sim, data_matrix, liste_id, pos = recommendation(matrix, user_id)
     pred = predi_film(data_matrix,user_sim,pos)
     return dico_note_film(pred, liste_id)
 
+def trouver_note_json(user_id):
+    '''pour un user_id donné, renvoie un json avec, pour des id de films, les notes associées décroissantes'''
+    matrix = create_matrix()
+    user_sim, data_matrix, liste_id, pos = recommendation(matrix, user_id)
+    pred = predi_film(data_matrix,user_sim,pos)
+    return notes_triees(pred, liste_id)
 
 #######################################################
 #On verra plus tard

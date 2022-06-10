@@ -1,27 +1,29 @@
 <template>
-  <div class="add-user-title">Add new user:</div>
-  <div class="add-user-form-container">
-    <form ref="addUserForm">
-      <input
-        class="add-user-input"
-        v-model="user.email"
-        type="email"
-        placeholder="Email"
-        required
-      />
-      <input
-        class="add-user-input"
-        v-model="user.firstName"
-        placeholder="First name"
-      />
-      <input
-        class="add-user-input"
-        v-model="user.lastName"
-        placeholder="Last name"
-      />
-    </form>
-    <button class="add-user-button" @click="addUser()">Add user</button>
-    <div v-if="userCreationError">{{ userCreationError }}</div>
+  <div class="add-user">
+    <div class="add-user-title">Add new user:</div>
+    <div class="add-user-form-container">
+      <form ref="addUserForm">
+        <input
+          class="add-user-input"
+          v-model="user.email"
+          type="email"
+          placeholder="Email"
+          required
+        />
+        <input
+          class="add-user-input"
+          v-model="user.firstName"
+          placeholder="First name"
+        />
+        <input
+          class="add-user-input"
+          v-model="user.lastName"
+          placeholder="Last name"
+        />
+      </form>
+      <button class="add-user-button" @click="addUser()">Add user</button>
+      <div v-if="userCreationError">{{ userCreationError }}</div>
+    </div>
   </div>
 </template>
 
@@ -67,6 +69,13 @@ export default {
 };
 </script>
 <style scoped>
+.add-user {
+  margin-left: auto;
+  margin-right: auto;
+  align-content: center;
+  text-align: center;
+  display: flex;
+}
 .add-user-title {
   margin-bottom: 10px;
 }

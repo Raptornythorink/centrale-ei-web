@@ -37,10 +37,14 @@ async function populateMovies(allMovies) {
     for (const genreId of movie.genre_ids) {
       genres.push(genresArray[genreId]);
     }
+    let release_date = movie.release_date;
+    if (movie.release_date === "") {
+      release_date = "To be released";
+    }
     const newMovie = new MovieModel({
       id: movie.id,
       title: movie.title,
-      release_date: movie.release_date,
+      release_date: release_date,
       desc: movie.overview,
       genres: genres,
       poster_path: movie.poster_path,

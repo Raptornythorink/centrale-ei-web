@@ -1,18 +1,14 @@
 <template>
+  <Navbar :userId="userId"></Navbar>
   <div class="home">
-    <img
-      alt="Morbin"
-      src="https://d1fmx1rbmqrxrr.cloudfront.net/cnet/optim/i/edit/2022/01/Morbius%202022%20Big__w1200.jpg"
-      width="300"
-      class="logo"
-    />
-    <h1>CSALTO</h1>
+    <img alt="logo" src="http://localhost:8080/csalto_white.png" class="logo" />
     <p>
       <input
         type="text"
         v-model="query"
         v-on:input="findMovies"
         placeholder="Search..."
+        class="search"
       />
     </p>
     <div class="pageButtons">
@@ -32,6 +28,7 @@
           maxMoviesPerPage * page
         )"
         :movie="movie"
+        :userId="userId"
         :key="movie.id"
       />
     </div>
@@ -49,11 +46,12 @@
 </template>
 
 <script>
+import Navbar from "@/components/Navbar.vue";
 import Movie from "@/components/Movie.vue";
 import axios from "axios";
 export default {
   name: "Home",
-  components: { Movie },
+  components: { Navbar, Movie },
   data: function () {
     return {
       query: "",
@@ -64,10 +62,8 @@ export default {
       foundMoviesNumber: 0,
       maxMoviesPerPage: 21,
       pagesNumber: 0,
+      userId: "",
     };
-  },
-  created() {
-    console.log("Hello World");
   },
   methods: {
     fetchMovies: function () {
@@ -106,6 +102,13 @@ export default {
       this.page = index;
     },
   },
+  created: function () {
+    try {
+      this.userId = this.$route.params.userId;
+    } catch {
+      this.userId = "";
+    }
+  },
   mounted: function () {
     this.fetchMovies();
   },
@@ -116,9 +119,7 @@ export default {
 <style scoped>
 .home {
   text-align: center;
-  background-image: url("../../public/fond3.webp");
-  background-position: center top;
-  background-size: 100% auto;
+  background-image: url("../../public/background.webp");
   padding-bottom: 100px;
 }
 
@@ -141,13 +142,14 @@ a {
 }
 
 .logo {
-  border: 1px solid #fff;
-  margin-top: 25px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: 600px;
 }
 
 .search {
   text-align: center;
-  color: white;
+  margin-bottom: 30px;
 }
 
 .pageButtons {
@@ -161,8 +163,9 @@ a {
   height: 30px;
   width: 30px;
   border-radius: 10px;
-  background-color: blue;
+  background-color: black;
   color: white;
+  cursor: pointer;
 }
 
 .activePageButton {

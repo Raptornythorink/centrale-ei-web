@@ -1,12 +1,20 @@
 <template>
-  <h1>Users</h1>
-  <AddUser @userAdded="fetchUsers()" />
-  <UsersTable v-if="users.length" :users="users" @userDeleted="fetchUsers()" />
-  <div v-if="usersLoadingError">{{ usersLoadingError }}</div>
+  <Navbar :userId="userId"></Navbar>
+  <div class="users">
+    <img alt="logo" src="http://localhost:8080/csalto_white.png" class="logo" />
+    <AddUser @userAdded="fetchUsers()" />
+    <UsersTable
+      v-if="users.length"
+      :users="users"
+      @userDeleted="fetchUsers()"
+      :userId="userId"
+    />
+    <div v-if="usersLoadingError">{{ usersLoadingError }}</div>
+  </div>
 </template>
 
 <script>
-// @ is an alias to /src
+import Navbar from "@/components/Navbar.vue";
 import UsersTable from "@/components/UsersTable.vue";
 import AddUser from "@/components/AddUser.vue";
 import axios from "axios";
@@ -16,11 +24,13 @@ export default {
   components: {
     AddUser,
     UsersTable,
+    Navbar,
   },
   data: function () {
     return {
       users: [],
       usersLoadingError: "",
+      userId: "",
     };
   },
   methods: {
@@ -36,8 +46,33 @@ export default {
         });
     },
   },
+  created: function () {
+    try {
+      this.userId = this.$route.params.userId;
+    } catch {
+      this.userId = "";
+    }
+  },
   mounted: function () {
     this.fetchUsers();
   },
 };
 </script>
+
+<style scoped>
+.users {
+  background-image: url("../../public/background.webp");
+  margin-left: auto;
+  margin-right: auto;
+  align-content: center;
+  margin-bottom: 150px;
+  text-align: center;
+}
+.logo {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>

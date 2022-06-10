@@ -1,10 +1,6 @@
 <template>
-  <router-link :to="'/movies/' + movie.id_" class="movie">
-    <img
-      :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path"
-      width="230"
-      class="poster"
-    />
+  <router-link :to="link" class="movie">
+    <img :src="posterPath" width="230" class="poster" />
     <div class="description">
       <div class="title">{{ movie.title }}</div>
       <div class="date">{{ movie.release_date }}</div>
@@ -17,11 +13,29 @@ export default {
   name: "Movie",
   props: {
     movie: Object,
+    userId: String,
+  },
+  data: function () {
+    return {
+      link: "/movies/" + this.movie.id,
+      posterPath: "",
+    };
+  },
+  mounted: function () {
+    if (this.userId != undefined) {
+      this.link += "/" + this.userId;
+    }
+    if (this.movie.poster_path != undefined) {
+      this.posterPath =
+        "https://image.tmdb.org/t/p/w300" + this.movie.poster_path;
+    } else {
+      this.posterPath = "no_poster.jpg";
+    }
   },
 };
 </script>
 
-<style>
+<style scoped>
 .movie {
   text-decoration: none;
   margin-top: 25px;
@@ -33,6 +47,7 @@ export default {
   border: 2px solid #fff;
   margin-bottom: 5px;
   border-radius: 15px;
+  height: 345px;
 }
 .description {
   background: linear-gradient(rgb(143, 143, 143), #000);

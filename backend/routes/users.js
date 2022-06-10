@@ -11,9 +11,9 @@ router.get("/", function (req, res) {
 
 router.get("/:id", async function (req, res) {
   const userId = req.params.id;
-  const allMoviesUser= await MovieModel.find({});
-  res.status(201).json(allMoviesUser)
-})
+  const allMoviesUser = await MovieModel.find({ _id: userId });
+  res.status(201).json(allMoviesUser);
+});
 
 router.post("/new", function (req, res) {
   const newUser = new UserModel({
