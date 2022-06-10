@@ -5,11 +5,12 @@ const NoteModel = require("../models/notation");
 const router = express.Router();
 
 router.get("/get/:movieId/:userId", async function (req, res) {
-  const movieId = req.params.id;
-  const userId = req.params.id;
   try {
-    const note = await MovieModel.find({ movie: movieId, user: userId });
-    res.status(201).json(note);
+    const doc = await NoteModel.findOne({
+      user: req.params.userId,
+      movie: req.params.movieId,
+    });
+    res.status(201).json({ doc });
   } catch {
     res.status(500).json({ message: "Note not found" });
   }

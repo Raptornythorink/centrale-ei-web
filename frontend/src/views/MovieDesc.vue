@@ -1,22 +1,27 @@
 <template>
-  <div class="all">
-    <Navbar :userId="userId"></Navbar>
-    <div class="movie">
+  <Navbar :userId="userId"></Navbar>
+  <div class="movie">
+    <p>
       <img
-        :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path"
-        width="230"
-        class="poster"
+        alt="logo"
+        src="http://localhost:8080/csalto_white.png"
+        class="logo"
       />
-      <div class="description">
-        <div class="title">{{ movie.title }}</div>
-        <div class="date">{{ movie.release_date }}</div>
-        <div class="genres">
-          <div v-for="genre in movie.genres" :key="genre" class="genre">
-            {{ genre }}
-          </div>
+    </p>
+    <img
+      :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path"
+      width="230"
+      class="poster"
+    />
+    <div class="description">
+      <div class="title">{{ movie.title }}</div>
+      <div class="date">{{ movie.release_date }}</div>
+      <div class="genres">
+        <div v-for="genre in movie.genres" :key="genre" class="genre">
+          {{ genre }}
         </div>
-        <div class="desc">{{ movie.desc }}</div>
       </div>
+      <div class="desc">{{ movie.desc }}</div>
     </div>
   </div>
 </template>
@@ -30,10 +35,11 @@ export default {
   data: function () {
     return {
       movie: {},
+      rating: 0,
     };
   },
   methods: {
-    fetchTheMovie: function () {
+    fetchMovie: function () {
       axios
         .get(`http://localhost:3000/movies/${this.$route.params.movieId}`)
         .then((response) => {
@@ -45,18 +51,27 @@ export default {
         });
     },
   },
-  mounted: function () {
-    console.log(this.$route);
-    this.fetchTheMovie();
+  created: async function () {
+    try {
+      this.userId = this.$route.params.userId;
+    } catch {
+      this.userId = "";
+    }
+    try {
+      await this.fetchNote();
+    } catch {
+      this.rating = 0;
+    }
+  },
+  mounted: async function () {
+    this.fetchMovie();
   },
 };
 </script>
 
 <style scoped>
-.all {
-  background-image: url("../../public/background.webp");
-}
 .movie {
+  background-image: url("../../public/background.webp");
   text-align: center;
   padding-top: 50px;
   padding-bottom: 50px;
