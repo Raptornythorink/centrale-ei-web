@@ -29,7 +29,7 @@ export default {
       this.posterPath =
         "https://image.tmdb.org/t/p/w300" + this.movie.poster_path;
     } else {
-      this.posterPath = "no_poster.jpg";
+      this.posterPath = "../no_poster.jpg";
     }
   },
 };
