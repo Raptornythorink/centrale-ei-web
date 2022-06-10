@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import os
-from pymongo import MongoClient
+from pymongo import MongoClient, find_one_and_update
 import pymongo
 from json import load
 from json import dumps as json_dumps
@@ -86,8 +86,55 @@ def trouver_note_json(user_id):
     user_sim, data_matrix, liste_id, pos = recommendation(matrix, user_id)
     pred = predi_film(data_matrix,user_sim,pos)
     return notes_triees(pred, liste_id)
-
+ 
 #######################################################
+def recommendation_v2(data):
+    '''prend un tableau panda en entrée, et l'id de l'user\n
+    renvoie la matrice de similarité utilisateur et la matrice de notations,\n
+    la liste des id des films et la liste des id d'utilisateurs'''
+    movie_matrix = data.pivot_table(index='user', columns='movie', values='note')
+    user_id = list(movie_matrix.index)
+    liste_id = list(movie_matrix.columns)
+    # pos = user_id.index(id_user)
+    data_matrix = np.zeros((len(data), len(data[0])))
+    for line in data.itertuples():
+        data_matrix[line[1]-1, line[2]-1] = line[3]
+    from sklearn.metrics.pairwise import pairwise_distances
+    user_similarity = pairwise_distances(data_matrix, metric='cosine')
+    return user_similarity,data_matrix,liste_id,user_id
+
+def update_recommended_user(user_id,film_reco):
+    '''Pour un user_id, modifie la liste des films recommendés'''
+    client = MongoClient(MONGO_BD_URL)
+    client.group4.users[f"{user_id}"].find_one_and_update({'recommendedMovies':film_reco}, upsert=True)
+
+def trouver_films(film_id,liste_note,pos):
+    '''pour une liste de note, renvoie la liste des id des films les mieux notés'''
+    film_reco = []
+    for i in range(20):
+        m = liste_note[i]
+        index = i
+        for j in liste_note[i:]:
+            if liste_note[j] > m:
+                m = liste_note[j]
+                index = j
+        film_reco.append[film_id[index]]
+        film_reco[i],film_reco[index] = film_reco[index],film_reco[i]
+        liste_note[i],liste_note[index] = liste_note[index],liste_note[i]
+    return film_reco
+
+def update_recommended():
+    data = create_matrix()
+    user_sim,data_matrice,film_id,user_id = recommendation_v2(data)
+    pred = predict_usine_a_gaz(data_matrice, user_sim)
+    for i in range(len(user_id)):
+        print(f"On en est au {i}e user")
+        film_reco = trouver_films(film_id,pred[i])
+        update_recommended_user(user_id[i],film_reco)
+    return None
+update_recommended()
+
+###########################################################
 #On verra plus tard
 def predict_mieux(ratings, similarity,pos):
     '''ratings: liste de liste avec les notes
