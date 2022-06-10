@@ -27,7 +27,7 @@ router.post("/new", async function (req, res) {
     res.status(201).json(createdMovie);
   } catch (error) {
     console.error(error);
-    res.status(500).json({message: "Error while adding the movie"})
+    res.status(500).json({message: "Error while adding the movie", error})
   }
 })
 
@@ -43,6 +43,7 @@ router.post("/new:viewers", async function (req, res) {
     res.status(201).json(createdMovie);
   } catch (error) {
     console.error(error);
+    console.log(error)
     res.status(500).json({ message: "Error while adding the movie" });
   }
 });

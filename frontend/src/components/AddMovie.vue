@@ -5,23 +5,23 @@
       <form ref="addMovieForm">
         <input
           class="add-movie-input"
-          v-model="movies.title"
+          v-model="movie.title"
           placeholder="Title"
           required
         />
         <input
           class="add-movie-input"
-          v-model="movies.release_date"
+          v-model="movie.release_date"
           placeholder="Release Date"
         />
         <input
           class="add-movie-input"
-          v-model="movies.desc"
+          v-model="movie.desc"
           placeholder="Description"
         />
         <input
           class="add-movie-input"
-          v-model="movies.genres"
+          v-model="movie.genres"
           placeholder="Genres"
         />
       </form>
@@ -36,6 +36,9 @@ import axios from "axios";
 
 export default {
   name: "AddMovie",
+  props: {
+    movieAdded: "",
+  },
   emits: ["movieAdded"],
   data: function () {
     return {

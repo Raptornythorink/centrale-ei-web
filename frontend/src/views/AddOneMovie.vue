@@ -1,8 +1,8 @@
 <template>
   <Navbar :userId="userId"></Navbar>
-  <div class="addMovie">
+  <div class="movieadding">
     <img alt="logo" src="http://localhost:8080/csalto_white.png" class="logo" />
-    <AddMovie @movieAdded="fetchMovies()" />
+    <AddMovie :movieAdded="fetchMovies()"/>
     <div v-if="moviesLoadingError">{{ moviesLoadingError }}</div>
   </div>
 </template>
@@ -48,18 +48,19 @@ export default {
     },
     mounted: function () {
         this.fetchMovies();
+        console.log(this.$route)
     },
 }
 </script>
 
 <style scoped>
-.addMovie {
-  background-image: url("../../public/background.webp");
-  margin-left: auto;
-  margin-right: auto;
-  align-content: center;
-  margin-bottom: 150px;
-  text-align: center;
+.movieadding {
+    background-image: url("../../public/background.webp");
+    margin-left: auto;
+    margin-right: auto;
+    align-content: center;
+    margin-bottom: 150px;
+    text-align: center;
 }
 .logo {
   margin-top: 50px;
