@@ -24,6 +24,7 @@
         value="5"
         class="visuallyhidden"
         :v-model="rating"
+        @change="onChange($event)"
       /><label for="star5" title="Amazing">★</label>
       <input
         type="radio"
@@ -32,6 +33,7 @@
         value="4"
         class="visuallyhidden"
         :v-model="rating"
+        @change="onChange($event)"
       /><label for="star4" title="Pretty good">★</label>
       <input
         type="radio"
@@ -40,6 +42,7 @@
         value="3"
         class="visuallyhidden"
         :v-model="rating"
+        @change="onChange($event)"
       /><label for="star3" title="Meh">★</label>
       <input
         type="radio"
@@ -48,6 +51,7 @@
         value="2"
         class="visuallyhidden"
         :v-model="rating"
+        @change="onChange($event)"
       /><label for="star2" title="Kinda bad">★</label>
       <input
         type="radio"
@@ -56,6 +60,7 @@
         value="1"
         class="visuallyhidden"
         :v-model="rating"
+        @change="onChange($event)"
       /><label for="star1" title="Really bad">★</label>
     </div>
   </div>
@@ -85,18 +90,17 @@ export default {
           console.error(error);
         });
     },
-    updateRating: function () {},
-  },
-  watch: {
-    rating: async function (newNote) {
-      const response = await axios.put(
+    onChange: function (event) {
+      console.log(event);
+      var newNote = event.target.value;
+      axios.put(
         "http://localhost:3000/notation/new/" +
-          this.movieId +
+          this.$route.params.movieId +
           "/" +
-          this.userId,
-        +"/" + newNote
+          this.$route.params.userId +
+          "/" +
+          newNote
       );
-      return response.data.results;
     },
   },
   created: function () {
