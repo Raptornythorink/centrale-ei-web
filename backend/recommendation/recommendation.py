@@ -1,11 +1,12 @@
 import numpy as np
 import pandas as pd
 import os
-from pymongo import MongoClient, find_one_and_update
+from pymongo import MongoClient
 import pymongo
 from json import load
 from json import dumps as json_dumps
 from bson.json_util import dumps
+from bson.objectid import ObjectId
 from dotenv import load_dotenv,find_dotenv
 load_dotenv(find_dotenv())
 MONGO_BD_URL = os.environ.get('MONGO_DB_URL')
@@ -13,7 +14,7 @@ MONGO_BD_URL = os.environ.get('MONGO_DB_URL')
 def get_database():
     '''retourne le Mongo Cursor de la DB de notations'''
     client = MongoClient(MONGO_BD_URL)
-    movies = client.group4.movies.find()############################changer movies
+    movies = client.group4.notes.find()############################changer movies
     return movies
 
 #######################################################################
@@ -93,12 +94,18 @@ def recommendation_v2(data):
     renvoie la matrice de similarité utilisateur et la matrice de notations,\n
     la liste des id des films et la liste des id d'utilisateurs'''
     movie_matrix = data.pivot_table(index='user', columns='movie', values='note')
+    # print(movie_matrix,data,'e',(len(movie_matrix),(movie_matrix[453395]['629f5bc810cc1325b9530aea'])))
     user_id = list(movie_matrix.index)
     liste_id = list(movie_matrix.columns)
     # pos = user_id.index(id_user)
-    data_matrix = np.zeros((len(data), len(data[0])))
-    for line in data.itertuples():
-        data_matrix[line[1]-1, line[2]-1] = line[3]
+    data_matrix = np.zeros((len(movie_matrix),len(movie_matrix.columns)))
+    # for line in data.itertuples():
+    #     data_matrix[line[1]-1, line[2]-1] = line[3]
+    for i in range(len(movie_matrix)):
+        for j in range(len(movie_matrix.columns)):
+            n = movie_matrix[liste_id[j]][user_id[i]]
+            if type(n) == int or type(n) == float:
+                data_matrix = n
     from sklearn.metrics.pairwise import pairwise_distances
     user_similarity = pairwise_distances(data_matrix, metric='cosine')
     return user_similarity,data_matrix,liste_id,user_id
@@ -106,19 +113,20 @@ def recommendation_v2(data):
 def update_recommended_user(user_id,film_reco):
     '''Pour un user_id, modifie la liste des films recommendés'''
     client = MongoClient(MONGO_BD_URL)
-    client.group4.users[f"{user_id}"].find_one_and_update({'recommendedMovies':film_reco}, upsert=True)
+    print('Je fais un truc',film_reco, user_id)
+    client.group4.users.find_one_and_update({'_id':ObjectId(user_id)},{'$set':{'recommendedMovies':film_reco}})
 
-def trouver_films(film_id,liste_note,pos):
+def trouver_films(film_id,liste_note):
     '''pour une liste de note, renvoie la liste des id des films les mieux notés'''
     film_reco = []
-    for i in range(20):
+    for i in range(min(len(liste_note),20)):
         m = liste_note[i]
         index = i
-        for j in liste_note[i:]:
+        for j in range(i,len(liste_note)):
             if liste_note[j] > m:
                 m = liste_note[j]
                 index = j
-        film_reco.append[film_id[index]]
+        film_reco.append(str(film_id[index]))
         film_reco[i],film_reco[index] = film_reco[index],film_reco[i]
         liste_note[i],liste_note[index] = liste_note[index],liste_note[i]
     return film_reco
