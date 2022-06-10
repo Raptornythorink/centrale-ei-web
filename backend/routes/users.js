@@ -15,11 +15,19 @@ router.get("/:id", async function (req, res) {
   res.status(201).json(allMoviesUser);
 });
 
+router.get("/:id/recommended", async function (req, res) {
+  const userId = req.params.id;
+  const user= await UserModel.find({_id: userId});
+  const recoMovies=user[0].recommendedMovies;
+  res.status(201).json(recoMovies)
+})
+
 router.post("/new", function (req, res) {
   const newUser = new UserModel({
     email: req.body.email,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
+    recommendedMovies: req.body.recommendedMovies,
   });
 
   newUser
