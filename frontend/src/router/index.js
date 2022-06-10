@@ -3,6 +3,7 @@ import Home from "../views/Home.vue";
 import Users from "../views/Users.vue";
 import MovieDesc from "../views/MovieDesc.vue";
 import MovieDescRating from "../views/MovieDescRating.vue";
+import AddOneMovie from "../views/AddOneMovie.vue"
 
 const routes = [
   {
@@ -35,6 +36,11 @@ const routes = [
     name: "MovieDescRating",
     component: MovieDescRating,
   },
+  {
+    path: "/add",
+    name: "AddOneMovie",
+    component: AddOneMovie,
+  }
 ];
 
 const router = createRouter({

@@ -15,6 +15,22 @@ router.get("/:id", async function (req, res) {
   res.status(201).json(movie);
 });
 
+router.post("/new", async function (req, res) {
+  try {
+    const newMovie = new MovieModel({
+      title: req.body.title,
+      release_date: req.body.release_date,
+      desc: req.body.desc,
+      genres: req.body.genres,
+    });
+    const createdMovie = await newMovie.save();
+    res.status(201).json(createdMovie);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message: "Error while adding the movie"})
+  }
+})
+
 router.post("/new:viewers", async function (req, res) {
   try {
     const newMovie = new MovieModel({
