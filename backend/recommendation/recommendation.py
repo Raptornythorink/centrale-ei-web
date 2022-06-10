@@ -6,6 +6,7 @@ import pymongo
 from json import load
 from json import dumps as json_dumps
 from bson.json_util import dumps
+from bson.objectid import ObjectId
 from dotenv import load_dotenv,find_dotenv
 load_dotenv(find_dotenv())
 MONGO_BD_URL = os.environ.get('MONGO_DB_URL')
@@ -112,7 +113,8 @@ def recommendation_v2(data):
 def update_recommended_user(user_id,film_reco):
     '''Pour un user_id, modifie la liste des films recommendés'''
     client = MongoClient(MONGO_BD_URL)
-    client.group4.users.find_one_and_update({'_id':user_id},{'$set':{'recommendedMovies':film_reco}})
+    print('Je fais un truc',film_reco, user_id)
+    client.group4.users.find_one_and_update({'_id':ObjectId(user_id)},{'$set':{'recommendedMovies':film_reco}})
 
 def trouver_films(film_id,liste_note):
     '''pour une liste de note, renvoie la liste des id des films les mieux notés'''
