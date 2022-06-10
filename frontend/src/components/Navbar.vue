@@ -1,6 +1,12 @@
 <template>
   <div class="nav">
     <router-link class="nav-link" :to="homeLink">Home</router-link>
+    <router-link
+      class="nav-link"
+      :to="recommendedLink"
+      v-if="userId != undefined"
+      >Recommended</router-link
+    >
     <router-link class="nav-link" :to="usersLink">Users</router-link>
     <router-link class="nav-link" :to="addLink">Add Movie</router-link>
   </div>
@@ -18,6 +24,7 @@ export default {
       homeLink: "/home",
       usersLink: "/users",
       addLink: "/add",
+      recommendedLink: "/recommended",
     };
   },
   mounted: function () {
@@ -25,6 +32,7 @@ export default {
       this.homeLink += "/" + this.userId;
       this.usersLink += "/" + this.userId;
       this.addLink += "/" + this.userId;
+      this.recommendedLink += "/" + this.userId;
     }
   },
 };
