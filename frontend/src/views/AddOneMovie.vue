@@ -54,7 +54,18 @@ export default {
 
 <style scoped>
 .addMovie {
-    text-align: center;
-    background-image: url("../../public/background.webp");
+  background-image: url("../../public/background.webp");
+  margin-left: auto;
+  margin-right: auto;
+  align-content: center;
+  margin-bottom: 150px;
+  text-align: center;
+}
+.logo {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
