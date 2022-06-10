@@ -70,7 +70,6 @@ export default {
       axios
         .get("http://localhost:3000/movies")
         .then((response) => {
-          console.log(response.data);
           this.movies = response.data;
           this.foundMovies = response.data;
           this.foundMoviesNumber = this.foundMovies.length;
