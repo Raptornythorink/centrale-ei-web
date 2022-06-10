@@ -141,12 +141,6 @@ a {
   color: #42b983;
 }
 
-.logo {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  width: 600px;
-}
-
 .search {
   text-align: center;
   margin-bottom: 30px;

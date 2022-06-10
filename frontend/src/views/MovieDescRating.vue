@@ -1,6 +1,13 @@
 <template>
   <Navbar :userId="userId"></Navbar>
   <div class="movie">
+    <p>
+      <img
+        alt="logo"
+        src="http://localhost:8080/csalto_white.png"
+        class="logo"
+      />
+    </p>
     <img
       :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path"
       width="230"
@@ -79,7 +86,7 @@ export default {
     };
   },
   methods: {
-    fetchTheMovie: function () {
+    fetchMovie: function () {
       axios
         .get(`http://localhost:3000/movies/${this.$route.params.movieId}`)
         .then((response) => {
@@ -89,6 +96,18 @@ export default {
           this.usersLoadingError = "An error occured while fetching the movie.";
           console.error(error);
         });
+    },
+    fetchNote: async function () {
+      const doc = await axios.get(
+        "http://localhost:3000/notation/get/" +
+          this.$route.params.movieId +
+          "/" +
+          this.$route.params.userId
+      );
+      console.log(doc);
+      if (doc.data.doc !== null) {
+        this.rating = doc.data.doc.note;
+      }
     },
     onChange: function (event) {
       console.log(event);
@@ -103,20 +122,20 @@ export default {
       );
     },
   },
-  created: function () {
+  created: async function () {
     try {
       this.userId = this.$route.params.userId;
     } catch {
       this.userId = "";
     }
-  },
-  mounted: function () {
-    this.fetchTheMovie();
     try {
-      // request get/:movieId/:userId, update this.rating
+      await this.fetchNote();
     } catch {
-      //rien
+      this.rating = 0;
     }
+  },
+  mounted: async function () {
+    this.fetchMovie();
   },
 };
 </script>

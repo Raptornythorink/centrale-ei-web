@@ -14,4 +14,12 @@
 .nav-link.router-link-exact-active {
   color: #42b983;
 }
+
+.logo {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>
