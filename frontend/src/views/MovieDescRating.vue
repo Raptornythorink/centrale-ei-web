@@ -104,13 +104,11 @@ export default {
           "/" +
           this.$route.params.userId
       );
-      console.log(doc);
       if (doc.data.doc !== null) {
         this.rating = doc.data.doc.note;
       }
     },
     onChange: function (event) {
-      console.log(event);
       var newNote = event.target.value;
       axios.put(
         "http://localhost:3000/notation/new/" +
