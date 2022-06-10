@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
+import Recommended from "../views/Recommended.vue";
 import Users from "../views/Users.vue";
 import MovieDesc from "../views/MovieDesc.vue";
 import MovieDescRating from "../views/MovieDescRating.vue";
@@ -14,6 +15,11 @@ const routes = [
     path: "/home/:userId",
     name: "HomePerso",
     component: Home,
+  },
+  {
+    path: "/recommended/:userId",
+    name: "Recommended",
+    component: Recommended,
   },
   {
     path: "/users",

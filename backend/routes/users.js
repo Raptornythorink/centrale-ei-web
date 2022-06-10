@@ -15,12 +15,15 @@ router.get("/:id", async function (req, res) {
   res.status(201).json(allMoviesUser);
 });
 
-router.get("/:id/recommended", async function (req, res) {
-  const userId = req.params.id;
-  const user= await UserModel.find({_id: userId});
-  const recoMovies=user[0].recommendedMovies;
-  res.status(201).json(recoMovies)
-})
+router.get("/recommended/:userId", async function (req, res) {
+  try {
+    const user = await UserModel.findOne({ _id: req.params.userId });
+    const movies = user.recommendedMovies;
+    res.status(201).json(movies);
+  } catch {
+    res.status(500).json({ message: "Recommended not available" });
+  }
+});
 
 router.post("/new", function (req, res) {
   const newUser = new UserModel({

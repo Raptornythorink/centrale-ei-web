@@ -9,9 +9,8 @@ router.get("/", async function (req, res) {
   res.status(201).json(allMovies);
 });
 
-router.get("/:id", async function (req, res) {
-  const id = req.params.id;
-  const movie = await MovieModel.find({ id: id });
+router.get("/get/:movieId", async function (req, res) {
+  const movie = await MovieModel.find({ id: req.params.movieId });
   res.status(201).json(movie);
 });
 
