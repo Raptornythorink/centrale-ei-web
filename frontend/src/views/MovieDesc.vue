@@ -41,7 +41,7 @@ export default {
   methods: {
     fetchMovie: function () {
       axios
-        .get(`http://localhost:3000/movies/${this.$route.params.movieId}`)
+        .get(`http://localhost:3000/movies/get/${this.$route.params.movieId}`)
         .then((response) => {
           this.movie = response.data[0];
         })

@@ -68,11 +68,4 @@ export default {
   margin-bottom: 150px;
   text-align: center;
 }
-.logo {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
 </style>
