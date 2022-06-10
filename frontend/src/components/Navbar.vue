@@ -8,7 +8,6 @@
       >Recommended</router-link
     >
     <router-link class="nav-link" :to="usersLink">Users</router-link>
-    <router-link class="nav-link" :to="addLink">Add Movie</router-link>
   </div>
   <router-view />
 </template>
@@ -23,7 +22,6 @@ export default {
     return {
       homeLink: "/home",
       usersLink: "/users",
-      addLink: "/add",
       recommendedLink: "/recommended",
     };
   },
@@ -31,7 +29,6 @@ export default {
     if (this.userId != undefined) {
       this.homeLink += "/" + this.userId;
       this.usersLink += "/" + this.userId;
-      this.addLink += "/" + this.userId;
       this.recommendedLink += "/" + this.userId;
     }
   },
